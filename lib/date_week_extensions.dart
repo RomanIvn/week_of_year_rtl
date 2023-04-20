@@ -5,7 +5,7 @@ extension DateWeekExtensions on DateTime {
   int get weekOfYear {
     // Add 3 to always compare with January 4th, which is always in week 1
     // Add 7 to index weeks starting with 1 instead of 0
-    final woy = ((ordinalDate - weekday + 10) ~/ 7);
+    final woy = ((ordinalDate - (weekday+1)%7 + 10) ~/ 7);
 
     // If the week number equals zero, it means that the given date belongs to the preceding (week-based) year.
     if (woy == 0) {
@@ -15,8 +15,8 @@ extension DateWeekExtensions on DateTime {
 
     // If the week number equals 53, one must check that the date is not actually in week 1 of the following year
     if (woy == 53 &&
-        DateTime(year, 1, 1).weekday != DateTime.thursday &&
-        DateTime(year, 12, 31).weekday != DateTime.thursday) {
+        (DateTime(year, 1, 1).weekday+1)%7 != DateTime.thursday &&
+        (DateTime(year, 12, 31).weekday+1)%7 != DateTime.thursday) {
       return 1;
     }
 
